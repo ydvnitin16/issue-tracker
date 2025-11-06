@@ -51,6 +51,18 @@ const IssuesList = ({ issues }) => {
         issuesPerPage * (page - 1),
         issuesPerPage * page
     );
+    const formatDate = (dateString) => {
+        if (!dateString) return 'Not provided';
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return 'Not provided';
+        return new Intl.DateTimeFormat('en-us', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+        }).format(date);
+    };
+
     useEffect(() => {
         if (paginated.length === 0 && page > 0) {
             const pageNumber = Math.ceil(filtered.length / issuesPerPage);
@@ -102,7 +114,7 @@ const IssuesList = ({ issues }) => {
                                 ? paginated.map((data) => (
                                       <TableRow key={data.id}>
                                           <TableCell className={'font-medium'}>
-                                              {data.name}
+                                              {data?.title || 'Untitled'}
                                           </TableCell>
                                           <TableCell>
                                               <Badge
@@ -115,22 +127,14 @@ const IssuesList = ({ issues }) => {
                                                           : data.status ===
                                                             'closed'
                                                           ? 'bg-purple-400/20 text-purple-800/90 rounded'
-                                                          : ''
+                                                          : 'bg-zinc-500/20 rounded text-zinc-800/90'
                                                   }`}
                                               >
-                                                  {data.status}
+                                                  {data?.status || 'Unknown'}
                                               </Badge>
                                           </TableCell>
                                           <TableCell className={'font-medium'}>
-                                              {new Intl.DateTimeFormat(
-                                                  'en-us',
-                                                  {
-                                                      weekday: 'long', // "Saturday"
-                                                      day: 'numeric', // "13"
-                                                      month: 'short', // "Aug"
-                                                      year: 'numeric', // "2005"
-                                                  }
-                                              ).format(new Date(data.created))}
+                                              {formatDate(data?.created)}
                                           </TableCell>
                                       </TableRow>
                                   ))
