@@ -1,3 +1,4 @@
+import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
 export let issues = [
@@ -99,7 +100,7 @@ Run migrations after schema creation.
 - Display issue title, status, and description  
 - Add placeholder for editing or deleting
     `,
-    status: "in progress",
+    status: "closed",
     created: new Date("November 7, 2025 10:50:00"),
   },
   {
@@ -126,7 +127,7 @@ Run migrations after schema creation.
 - Use PATCH request to update status  
 - Show status badges in UI
     `,
-    status: "open",
+    status: "in progress",
     created: new Date("November 7, 2025 11:10:00"),
   },
   {
@@ -275,7 +276,14 @@ Run migrations after schema creation.
 
 
 export async function GET(request) {
-    return NextResponse.json(issues);
+  try {
+    const issues = await prisma.issue.findMany();
+    console.log(issues)
+    return Response.json(issues);
+  } catch (err) {
+    console.error("❌ Prisma error:", err);
+    return Response.json({ error: err.message }, { status: 500 });
+  }
 }
 
 export async function POST(request) {
