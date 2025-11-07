@@ -1,9 +1,10 @@
+import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { issues } from '../route.js';
 
 export async function GET(request, { params }) {
     const { id } = await params;
-    const issue = issues.find((issue) => issue.id === Number(id));
+    const issue = await prisma.issue.findUnique({where: {id: id}})
+    console.log('Issue: ',issue)
     if (!issue)
         return NextResponse.json(
             { message: 'Issue Not Found' },
