@@ -9,6 +9,7 @@ import MDEditor from '@uiw/react-md-editor';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { redirect } from 'next/navigation';
 
 const CreateIssueForm = () => {
     const [value, setValue] = useState('');
@@ -39,6 +40,7 @@ const CreateIssueForm = () => {
         const resData = res.json()
         console.log('Response: ', resData)
         reset();
+        redirect('/issues')
     };
 
     return (
