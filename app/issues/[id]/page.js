@@ -41,7 +41,7 @@ const page = async ({ params }) => {
                             {issue?.status || 'Unknown'}
                         </Badge>
                         <p className=" relative rounded text-xl md:text-2xl font-semibold">
-                            {formatDate(issue?.created)}
+                            {formatDate(issue?.createdAt)}
                         </p>
                     </div>
                 </div>

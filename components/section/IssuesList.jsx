@@ -143,7 +143,7 @@ const IssuesList = ({ issues }) => {
                                               </Badge>
                                           </TableCell>
                                           <TableCell className={'font-medium'}>
-                                              {formatDate(data?.created)}
+                                              {formatDate(data?.createdAt)}
                                           </TableCell>
                                       </TableRow>
                                   ))
