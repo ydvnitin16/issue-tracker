@@ -1,3 +1,4 @@
+import { ThemeProvider } from '@/components/ThemeProvider';
 import './globals.css';
 import Navbar from '@/components/section/Navbar';
 
@@ -11,7 +12,14 @@ export default function RootLayout({ children }) {
         <html lang="en">
             <body>
                 <Navbar />
-                {children}
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {children}
+                </ThemeProvider>
             </body>
         </html>
     );
