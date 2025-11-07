@@ -23,6 +23,7 @@ import { Button } from '../ui/button';
 import Link from 'next/link';
 import IssuePagination from './IssuePagination';
 import { Input } from '../ui/input';
+import { useRouter } from 'next/navigation';
 
 const IssuesList = ({ issues }) => {
     const issuesPerPage = 5;
@@ -34,6 +35,7 @@ const IssuesList = ({ issues }) => {
         { label: 'In Progress', value: 'in progress' },
     ];
     const [page, setPage] = useState(1);
+    const router = useRouter();
 
     const [currentSortStatus, setCurrentSortStatus] = useState('all'); // track the selected sort status
 
@@ -102,7 +104,7 @@ const IssuesList = ({ issues }) => {
             <div className="w-full px-3 sm:px-10 py-4">
                 <div className="overflow-hidden">
                     <Table className={'border'}>
-                        <TableHeader className={'bg-zinc-100'}>
+                        <TableHeader className={'bg-zinc-100 dark:bg-zinc-700'}>
                             <TableRow>
                                 {tableHeaders.map((th, idx) => (
                                     <TableHead key={idx}>{th}</TableHead>
@@ -112,23 +114,30 @@ const IssuesList = ({ issues }) => {
                         <TableBody>
                             {paginated.length > 0
                                 ? paginated.map((data) => (
-                                      <TableRow key={data.id}>
+                                      <TableRow
+                                      className={'cursor-pointer'}
+                                          key={data.id}
+                                          onClick={() =>
+                                              router.push(`/issues/${data?.id}`)
+                                          }
+                                      >
                                           <TableCell className={'font-medium'}>
                                               {data?.title || 'Untitled'}
                                           </TableCell>
                                           <TableCell>
                                               <Badge
-                                                  className={`${
-                                                      data.status === 'open'
-                                                          ? 'bg-red-500/20 rounded text-red-800/90'
-                                                          : data.status ===
-                                                            'in progress'
-                                                          ? 'bg-green-300/20 rounded text-green-800/90'
-                                                          : data.status ===
-                                                            'closed'
-                                                          ? 'bg-purple-400/20 text-purple-800/90 rounded'
-                                                          : 'bg-zinc-500/20 rounded text-zinc-800/90'
-                                                  }`}
+                                                  className={`px-2 py-1 text-sm font-medium rounded-md transition-colors duration-200
+                                                    ${
+                                                        data.status === 'open'
+                                                            ? 'bg-red-500/20 text-red-700 border border-red-500/30 dark:bg-red-500/30 dark:text-red-300 dark:border-red-500/50'
+                                                            : data.status ===
+                                                              'in progress'
+                                                            ? 'bg-yellow-500/20 text-yellow-700 border border-yellow-500/30 dark:bg-yellow-500/30 dark:text-yellow-200 dark:border-yellow-500/50'
+                                                            : data.status ===
+                                                              'closed'
+                                                            ? 'bg-purple-500/20 text-purple-700 border border-purple-500/30 dark:bg-purple-500/30 dark:text-purple-200 dark:border-purple-500/50'
+                                                            : 'bg-zinc-500/20 text-zinc-700 border border-zinc-500/30 dark:bg-zinc-700/30 dark:text-zinc-300 dark:border-zinc-600/50'
+                                                    }`}
                                               >
                                                   {data?.status || 'Unknown'}
                                               </Badge>
