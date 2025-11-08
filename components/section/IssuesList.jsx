@@ -31,8 +31,8 @@ const IssuesList = ({ issues }) => {
     const sortStatus = [
         { label: 'All', value: 'all' },
         { label: 'Open', value: 'open' },
-        { label: 'Closed', value: 'closed' },
         { label: 'In Progress', value: 'in progress' },
+        { label: 'Closed', value: 'closed' },
     ];
     const [page, setPage] = useState(1);
     const router = useRouter();
@@ -78,9 +78,9 @@ const IssuesList = ({ issues }) => {
     return (
         <>
             <div className="w-full flex flex-wrap gap-2 justify-between overflow-hidden px-10 pt-5 relative z-1000">
-                <Select onValueChange={setCurrentSortStatus}>
+                <Select defaultValue='all' onValueChange={setCurrentSortStatus}>
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Sort by Status" />
+                        <SelectValue placeholder="Filter by Status" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
@@ -88,7 +88,6 @@ const IssuesList = ({ issues }) => {
                             {sortStatus.map((s, idx) => (
                                 <SelectItem
                                     key={idx}
-                                    selected={s.value === 'all'}
                                     value={s.value}
                                 >
                                     {s.label}
@@ -194,7 +193,6 @@ const IssuesList = ({ issues }) => {
                     Next
                 </Button>
             </div>
-            {/* <IssuePagination /> */}
         </>
     );
 };
