@@ -2,7 +2,12 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import MDEditor from '@uiw/react-md-editor';
@@ -31,20 +36,20 @@ const CreateIssueForm = () => {
     });
 
     const onSubmit = async (data) => {
-        console.log(data)
+        console.log(data);
         const res = await fetch('http://localhost:3000/api/issues', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
         });
-        const resData = res.json()
-        console.log('Response: ', resData)
+        const resData = res.json();
+        console.log('Response: ', resData);
         reset();
-        redirect('/issues')
+        redirect('/issues');
     };
 
     return (
-        <div className="mt-20 flex justify-center items-center">
+        <div className="mt-20 flex justify-center items-center mx-4">
             <Card className={'w-full max-w-lg'}>
                 <CardHeader>
                     <CardTitle className={'text-2xl'}>

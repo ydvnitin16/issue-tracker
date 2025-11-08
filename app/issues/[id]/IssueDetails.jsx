@@ -3,7 +3,7 @@ import React from 'react';
 import Markdown from 'react-markdown';
 import { formatDate } from '@/lib/utils/formatUtils.js';
 
-const IssueDetails = ({issue}) => {
+const IssueDetails = ({ issue }) => {
     return (
         <section className="flex flex-col flex-3 gap-8">
             <div>

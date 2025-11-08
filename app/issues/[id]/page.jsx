@@ -1,6 +1,6 @@
 import React from 'react';
-import IssueDetails from '../components/IssueDetails.jsx';
-import UpdateStatus from '../components/UpdateStatus.jsx';
+import IssueDetails from './IssueDetails.jsx';
+import UpdateStatus from './UpdateStatus.jsx';
 
 const page = async ({ params }) => {
     const { id } = await params;

@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import {
     Table,
@@ -8,8 +7,8 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '../ui/table';
-import { Badge } from '../ui/badge';
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 import {
     Select,
     SelectContent,
@@ -18,14 +17,14 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from '../ui/select';
-import { Button } from '../ui/button';
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import IssuePagination from './IssuePagination';
-import { Input } from '../ui/input';
 import { useRouter } from 'next/navigation';
+import { formatDate } from '@/lib/utils/formatUtils';
 
-const IssuesList = ({ issues }) => {
+const IssuesTable = ({ issues }) => {
     const issuesPerPage = 5;
     const tableHeaders = ['Issue', 'Status', 'Created'];
     const sortStatus = [
@@ -53,17 +52,6 @@ const IssuesList = ({ issues }) => {
         issuesPerPage * (page - 1),
         issuesPerPage * page
     );
-    const formatDate = (dateString) => {
-        if (!dateString) return 'Not provided';
-        const date = new Date(dateString);
-        if (isNaN(date.getTime())) return 'Not provided';
-        return new Intl.DateTimeFormat('en-us', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-        }).format(date);
-    };
 
     useEffect(() => {
         if (paginated.length === 0 && page > 0) {
@@ -197,4 +185,4 @@ const IssuesList = ({ issues }) => {
     );
 };
 
-export default IssuesList;
+export default IssuesTable;

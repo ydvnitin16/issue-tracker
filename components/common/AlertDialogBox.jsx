@@ -10,19 +10,21 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 
 const AlertDialogBox = ({
     title = 'Are you absolutely sure?',
     description = 'This action cannot be undone. This will permanently delete your Issue and remove it from our servers.',
     action,
     triggerText = 'Delete',
-    buttonVariant = 'destructive'
+    buttonVariant = 'destructive',
 }) => {
     return (
         <AlertDialog>
-            <AlertDialogTrigger className='w-full' >
-                <Button className='w-full'  variant={buttonVariant}>{triggerText}</Button>{' '}
+            <AlertDialogTrigger className="w-full">
+                <Button className="w-full" variant={buttonVariant}>
+                    {triggerText}
+                </Button>{' '}
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

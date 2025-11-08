@@ -1,4 +1,4 @@
-import CreateIssueForm from '@/components/section/CreateIssueForm';
+import CreateIssueForm from '@/app/issues/new/CreateIssueForm';
 
 import React from 'react';
 

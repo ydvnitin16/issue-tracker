@@ -13,9 +13,8 @@ import { debouceFunction } from '@/lib/utils/debounce';
 import {
     deleteIssueStatus,
     UpdateIssueStatus,
-} from '@/app/actions/issueAction';
-import { Button } from '@/components/ui/button';
-import AlertDialogBox from '@/components/section/AlertDialogBox';
+} from '@/actions/issueAction';
+import AlertDialogBox from '@/components/common/AlertDialogBox';
 
 const UpdateStatus = ({ issue }) => {
     const [status, setStatus] = useState();
