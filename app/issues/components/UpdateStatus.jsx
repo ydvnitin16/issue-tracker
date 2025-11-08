@@ -10,7 +10,12 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { debouceFunction } from '@/lib/utils/debounce';
-import { UpdateIssueStatus } from '@/app/actions/issueAction';
+import {
+    deleteIssueStatus,
+    UpdateIssueStatus,
+} from '@/app/actions/issueAction';
+import { Button } from '@/components/ui/button';
+import AlertDialogBox from '@/components/section/AlertDialogBox';
 
 const UpdateStatus = ({ issue }) => {
     const [status, setStatus] = useState();
@@ -21,29 +26,46 @@ const UpdateStatus = ({ issue }) => {
 
     useEffect(() => {
         if (!status) return;
-        debounceUpdate(issue.id, status)
+        debounceUpdate(issue.id, status);
     }, [status, debounceUpdate]);
 
     return (
-        <section className='flex-1 flex md:justify-center items-center justify-start'>
+        <section className="flex-1 flex md:flex-col flex-wrap px-10 gap-y-5 justify-start md:justify-center items-center">
             <Select
+                className="w-full"
                 defaultValue={issue.status || 'Unrecognised'}
                 onValueChange={setStatus}
             >
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-full cursor-pointer">
                     <SelectValue placeholder="update status" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
                         <SelectLabel>Status</SelectLabel>
-                        <SelectItem value={'open'}>Open</SelectItem>
-                        <SelectItem value={'closed'}>Closed</SelectItem>
-                        <SelectItem value={'in progress'}>
+                        <SelectItem className={'cursor-pointer'} value={'open'}>
+                            Open
+                        </SelectItem>
+                        <SelectItem
+                            className={'cursor-pointer'}
+                            value={'closed'}
+                        >
+                            Closed
+                        </SelectItem>
+                        <SelectItem
+                            className={'cursor-pointer'}
+                            value={'in progress'}
+                        >
                             In Progress
                         </SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>
+            <AlertDialogBox
+                className="w-full"
+                triggerText="Delete Issue"
+                action={() => deleteIssueStatus(issue.id)}
+                buttonVariant="default"
+            />
         </section>
     );
 };
