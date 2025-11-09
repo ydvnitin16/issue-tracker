@@ -13,6 +13,8 @@ import { deleteIssueStatus, UpdateIssueStatus } from '@/actions/issueAction';
 import AlertDialogBox from '@/components/common/AlertDialogBox';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const UpdateStatus = ({ issue }) => {
     const router = useRouter();
@@ -76,8 +78,11 @@ const UpdateStatus = ({ issue }) => {
                         toast.error(data.error);
                     }
                 }}
-                buttonVariant="default"
+                buttonVariant="destructive"
             />
+            <Link className={'w-full'} href={`/issues/${issue.id}/edit`}>
+                <Button className={'w-full'}>Edit Issue</Button>
+            </Link>
         </section>
     );
 };
