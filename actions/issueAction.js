@@ -32,7 +32,7 @@ export const UpdateIssueStatus = async (id, status) => {
 
 export const deleteIssueStatus = async (id) => {
     try {
-        if (id) {
+        if (!id) {
             throw new Error('Invalid data');
         }
         await prisma.issue.delete({ where: { id } });
