@@ -26,7 +26,7 @@ export const UpdateIssueStatus = async (id, status) => {
         };
     } catch (err) {
         console.error(err.message);
-        return { success: false, message: err.message };
+        return { success: false, error: err.message };
     }
 };
 

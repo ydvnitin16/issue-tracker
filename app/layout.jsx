@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import './globals.css';
 import Navbar from '@/components/layout/Navbar';
+import { Toaster } from '@/components/ui/sonner';
 
 export const metadata = {
     title: 'Create Next App',
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
                     disableTransitionOnChange
                 >
                     {children}
+                    <Toaster position={'top-right'}  />
                 </ThemeProvider>
             </body>
         </html>

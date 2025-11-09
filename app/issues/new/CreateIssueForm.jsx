@@ -10,6 +10,7 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const CreateIssueForm = () => {
     const router = useRouter();
@@ -44,10 +45,12 @@ const CreateIssueForm = () => {
             if (!res.ok) {
                 throw new Error(resData.error || 'Something went wrong!');
             }
+            toast.success(resData.message)
             reset();
             router.push('/issues');
         } catch (err) {
             console.log(err.message);
+            toast.error(err.message)
         } finally {
             setLoading(false);
         }
