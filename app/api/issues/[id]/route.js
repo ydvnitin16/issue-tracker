@@ -7,12 +7,12 @@ export async function GET(request, { params }) {
 
     if (!issue)
         return NextResponse.json(
-            { message: 'Issue Not Found' },
+            { success: false, error: 'Issue Not Found' },
             { status: 404 }
         );
 
     return NextResponse.json(
-        { succes: true, message: 'Issue fetched successfully', issue },
+        { success: true, message: 'Issue fetched successfully', issue },
         { status: 200 }
     );
 }

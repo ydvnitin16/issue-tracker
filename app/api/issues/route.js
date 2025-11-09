@@ -9,7 +9,10 @@ export async function GET() {
             { status: 200 }
         );
     } catch (err) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        );
     }
 }
 
@@ -18,7 +21,7 @@ export async function POST(request) {
         const body = await request.json();
         if (!body || !body.title || body.title.trim() === '') {
             return NextResponse.json(
-                { error: 'Missing title' },
+                { success: false, error: 'Missing title' },
                 { status: 400 }
             );
         }
@@ -36,6 +39,9 @@ export async function POST(request) {
             { status: 201 }
         );
     } catch (err) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return NextResponse.json(
+            { success: false, error: err.message },
+            { status: 500 }
+        );
     }
 }
