@@ -31,11 +31,15 @@ export const UpdateIssueStatus = async (id, status) => {
 };
 
 export const deleteIssueStatus = async (id) => {
-    if (!id) {
-        throw new Error('Invalid data');
+    try {
+        if (id) {
+            throw new Error('Invalid data');
+        }
+        await prisma.issue.delete({ where: { id } });
+        revalidatePath('/issues');
+        return { success: true, message: 'Issue deleted Successfully' };
+    } catch (err) {
+        console.error(err.message);
+        return { success: false, error: err.message };
     }
-    const issue = await prisma.issue.delete({ where: { id } });
-    if (!issue) throw new Error('Issue not found');
-    revalidatePath('/issues');
-    redirect('/issues');
 };

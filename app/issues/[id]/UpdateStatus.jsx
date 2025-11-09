@@ -1,5 +1,5 @@
 'use client';
-import React, { useTransition } from 'react';
+import React, { useState, useTransition } from 'react';
 import {
     Select,
     SelectGroup,
@@ -11,8 +11,12 @@ import {
 } from '@/components/ui/select';
 import { deleteIssueStatus, UpdateIssueStatus } from '@/actions/issueAction';
 import AlertDialogBox from '@/components/common/AlertDialogBox';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 const UpdateStatus = ({ issue }) => {
+    const router = useRouter();
+    const [status, setStatus] = useState(issue?.status);
     const [isPending, startTransition] = useTransition();
 
     return (
@@ -20,10 +24,16 @@ const UpdateStatus = ({ issue }) => {
             <Select
                 className="w-full disabled:cursor-no-drop"
                 disabled={isPending}
-                defaultValue={issue?.status || 'Unrecognised'}
+                value={isPending ? 'loading' : status}
                 onValueChange={(status) => {
                     startTransition(async () => {
                         const data = await UpdateIssueStatus(issue.id, status);
+                        if (!data.success) {
+                            toast.error(data.error);
+                            return;
+                        }
+                        setStatus(status);
+                        toast.success(data.message);
                     });
                 }}
             >
@@ -48,13 +58,24 @@ const UpdateStatus = ({ issue }) => {
                         >
                             In Progress
                         </SelectItem>
+                        <SelectItem className={'hidden'} value={'loading'}>
+                            Updating...
+                        </SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>
             <AlertDialogBox
                 className="w-full"
                 triggerText="Delete Issue"
-                action={() => deleteIssueStatus(issue?.id)}
+                action={async () => {
+                    const data = await deleteIssueStatus(issue?.id);
+                    if (data.success) {
+                        toast.success(data.message);
+                        router.push('/issues');
+                    } else {
+                        toast.error(data.error);
+                    }
+                }}
                 buttonVariant="default"
             />
         </section>
