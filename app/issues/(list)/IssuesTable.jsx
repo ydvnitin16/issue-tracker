@@ -8,7 +8,6 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
 import {
     Select,
     SelectContent,
@@ -49,10 +48,10 @@ const IssuesTable = ({ issues }) => {
                       currentSortStatus
               );
 
-    const paginated = filtered.slice(
+    const paginated = filtered.length>0 ? filtered?.slice(
         issuesPerPage * (page - 1),
         issuesPerPage * page
-    );
+    ) : [];
 
     useEffect(() => {
         if (paginated.length === 0 && page > 0) {

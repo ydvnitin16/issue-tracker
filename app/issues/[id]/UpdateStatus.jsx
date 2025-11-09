@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useTransition } from 'react';
 import {
     Select,
     SelectGroup,
@@ -9,31 +9,23 @@ import {
     SelectContent,
     SelectValue,
 } from '@/components/ui/select';
-import { debouceFunction } from '@/lib/utils/debounce';
-import {
-    deleteIssueStatus,
-    UpdateIssueStatus,
-} from '@/actions/issueAction';
+import { deleteIssueStatus, UpdateIssueStatus } from '@/actions/issueAction';
 import AlertDialogBox from '@/components/common/AlertDialogBox';
 
 const UpdateStatus = ({ issue }) => {
-    const [status, setStatus] = useState();
-    const debounceUpdate = useMemo(
-        () => debouceFunction(UpdateIssueStatus, 2000),
-        [issue.id]
-    );
-
-    useEffect(() => {
-        if (!status) return;
-        debounceUpdate(issue.id, status);
-    }, [status, debounceUpdate]);
+    const [isPending, startTransition] = useTransition();
 
     return (
         <section className="flex-1 flex md:flex-col flex-wrap px-10 gap-y-5 justify-start md:justify-center items-center">
             <Select
-                className="w-full"
-                defaultValue={issue.status || 'Unrecognised'}
-                onValueChange={setStatus}
+                className="w-full disabled:cursor-no-drop"
+                disabled={isPending}
+                defaultValue={issue?.status || 'Unrecognised'}
+                onValueChange={(status) => {
+                    startTransition(async () => {
+                        const data = await UpdateIssueStatus(issue.id, status);
+                    });
+                }}
             >
                 <SelectTrigger className="w-full cursor-pointer">
                     <SelectValue placeholder="update status" />
@@ -62,7 +54,7 @@ const UpdateStatus = ({ issue }) => {
             <AlertDialogBox
                 className="w-full"
                 triggerText="Delete Issue"
-                action={() => deleteIssueStatus(issue.id)}
+                action={() => deleteIssueStatus(issue?.id)}
                 buttonVariant="default"
             />
         </section>

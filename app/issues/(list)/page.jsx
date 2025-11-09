@@ -3,9 +3,12 @@ import React from 'react';
 
 const page = async () => {
     const res = await fetch('http://localhost:3000/api/issues');
-    const issues = await res.json();
+    const data = await res.json();
+    if(!res.ok){
+        throw new Error("Issue not found")
+    }
 
-    return <IssuesTable issues={issues} />;
+    return <IssuesTable issues={data.issues} />;
 };
 
 export default page;

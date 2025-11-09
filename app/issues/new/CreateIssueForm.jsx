@@ -2,22 +2,19 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import MDEditor from '@uiw/react-md-editor';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const CreateIssueForm = () => {
+    const router = useRouter();
     const [value, setValue] = useState('');
+    const [loading, setLoading] = useState('');
 
     const schema = yup.object({
         title: yup.string().trim().required('Please enter issue title'),
@@ -36,16 +33,24 @@ const CreateIssueForm = () => {
     });
 
     const onSubmit = async (data) => {
-        console.log(data);
-        const res = await fetch('http://localhost:3000/api/issues', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        });
-        const resData = res.json();
-        console.log('Response: ', resData);
-        reset();
-        redirect('/issues');
+        try {
+            setLoading(true);
+            const res = await fetch('http://localhost:3000/api/issues', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            const resData = await res.json();
+            if (!res.ok) {
+                throw new Error(resData.error || 'Something went wrong!');
+            }
+            reset();
+            router.push('/issues');
+        } catch (err) {
+            console.log(err.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -97,7 +102,9 @@ const CreateIssueForm = () => {
                                 type={'hidden'}
                             />
                         </div>
-                        <Button type="submit">Create Issue</Button>
+                        <Button type="submit" disabled={loading}>
+                            {loading ? 'Creating...' : 'Create Issue'}
+                        </Button>
                     </form>
                 </CardContent>
             </Card>

@@ -17,7 +17,7 @@ const AlertDialogBox = ({
     description = 'This action cannot be undone. This will permanently delete your Issue and remove it from our servers.',
     action,
     triggerText = 'Delete',
-    buttonVariant = 'destructive',
+    buttonVariant = 'default',
 }) => {
     return (
         <AlertDialog>

@@ -5,7 +5,7 @@ import React from 'react';
 
 const Home = async () => {
     const res = await fetch('http://localhost:3000/api/issues');
-    const latestIssues = await res.json();
+    const data = await res.json();
 
     return (
         <>
@@ -15,7 +15,7 @@ const Home = async () => {
                     <ChartBarDefault />
                 </div>
                 <div className="flex-1 w-full overflow-hidden">
-                    <LatestIssues latestIssues={latestIssues} />
+                    <LatestIssues latestIssues={data.issues} />
                 </div>
             </div>
         </>
