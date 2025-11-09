@@ -62,7 +62,7 @@ const IssuesTable = ({ issues }) => {
         if (page < 0) {
             setPage(1);
         }
-    }, [page]);
+    }, [page, currentSortStatus]);
 
     return (
         <>
