@@ -2,19 +2,35 @@ import React from 'react';
 import { Badge } from '../ui/badge';
 
 const StatusBadge = ({ status }) => {
-    const bagdeStyle = {
-        open: 'bg-red-500/20 text-red-700 border border-red-500/30 dark:bg-red-500/30 dark:text-red-300 dark:border-red-500/50',
-        'in progress':
-            'bg-green-500/20 text-green-700 border border-green-500/30 dark:bg-green-500/30 dark:text-green-300 dark:border-green-500/50',
-        closed: 'bg-purple-500/20 text-purple-700 border border-purple-500/30 dark:bg-purple-500/30 dark:text-purple-200 dark:border-purple-500/50',
-        default:
-            'bg-zinc-500/20 text-zinc-700 border border-zinc-500/30 dark:bg-zinc-700/30 dark:text-zinc-300 dark:border-zinc-600/50',
+    const badgeStyle = {
+        'open': `
+            bg-red-100 text-red-800 border border-red-300
+            dark:bg-red-950 dark:text-red-300 dark:border-red-800
+        `,
+        'in-progress': `
+            bg-emerald-100 text-emerald-800 border border-emerald-300
+            dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800
+        `,
+        'closed': `
+            bg-indigo-100 text-indigo-800 border border-indigo-300
+            dark:bg-indigo-950 dark:text-indigo-300 dark:border-indigo-800
+        `,
+        'default': `
+            bg-zinc-100 text-zinc-800 border border-zinc-300
+            dark:bg-zinc-900 dark:text-zinc-300 dark:border-zinc-700
+        `,
     };
+    const statusLabel = {
+        'open': 'Open',
+        'closed': 'Closed',
+        'in-progress': 'In Progress',
+    }
+
     return (
         <Badge
-            className={`px-2 py-1 text-sm font-medium rounded-md transition-colors duration-200 ${bagdeStyle[status]}`}
+            className={`px-2 py-1 text-sm font-medium rounded-md transition-all duration-200 shadow-sm ${badgeStyle[status] || badgeStyle.default}`}
         >
-            {status || 'Unknown'}
+            {statusLabel[status] || 'Unknown'}
         </Badge>
     );
 };
