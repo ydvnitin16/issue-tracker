@@ -20,53 +20,30 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { formatDate } from '@/lib/utils/formatUtils';
 import StatusBadge from '@/components/common/StatusBadge';
 
 const IssuesTable = ({ issues }) => {
-    const issuesPerPage = 5;
     const tableHeaders = ['Issue', 'Status', 'Created'];
     const sortStatus = [
         { label: 'All', value: 'all' },
         { label: 'Open', value: 'open' },
-        { label: 'In Progress', value: 'in progress' },
+        { label: 'In Progress', value: 'in-progress' },
         { label: 'Closed', value: 'closed' },
     ];
-    const [page, setPage] = useState(1);
     const router = useRouter();
+    const searchParams = useSearchParams()
 
-    const [currentSortStatus, setCurrentSortStatus] = useState('all'); // track the selected sort status
-
-    // Filter the issues by status
-    const filtered =
-        currentSortStatus === 'all'
-            ? issues
-            : issues.filter(
-                  (issue) =>
-                      issue.status.toString().toLowerCase() ===
-                      currentSortStatus
-              );
-
-    const paginated = filtered.length>0 ? filtered?.slice(
-        issuesPerPage * (page - 1),
-        issuesPerPage * page
-    ) : [];
-
-    useEffect(() => {
-        if (paginated.length === 0 && page > 0) {
-            const pageNumber = Math.ceil(filtered.length / issuesPerPage);
-            setPage(pageNumber);
-        }
-        if (page < 0) {
-            setPage(1);
-        }
-    }, [page, currentSortStatus]);
-
+    const handleStatusChange = (status) => {
+        const params = new URLSearchParams(searchParams)
+        params.set('status', status)
+        router.push('?' + params)
+    }
     return (
         <>
             <div className="w-full flex flex-wrap gap-2 justify-between overflow-hidden px-10 pt-5 relative z-1000">
-                <Select defaultValue='all' onValueChange={setCurrentSortStatus}>
+                <Select defaultValue='all' onValueChange={handleStatusChange}>
                     <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Filter by Status" />
                     </SelectTrigger>
@@ -99,8 +76,8 @@ const IssuesTable = ({ issues }) => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {paginated.length > 0
-                                ? paginated.map((data) => (
+                            {issues.length > 0
+                                ? issues.map((data) => (
                                       <TableRow
                                       className={'cursor-pointer'}
                                           key={data.id}
@@ -136,36 +113,7 @@ const IssuesTable = ({ issues }) => {
                     </Table>
                 </div>
             </div>
-            <div className="flex gap-5 items-center px-10">
-                <Button
-                    disabled={page === 1}
-                    onClick={() => {
-                        setPage((prev) => (prev > 1 ? prev - 1 : 1));
-                    }}
-                >
-                    Previous
-                </Button>
-                <Input
-                    type={'number'}
-                    className={'w-15'}
-                    value={page}
-                    onChange={(e) => setPage(e.target.value)}
-                />
-                <Button
-                    disabled={
-                        page >= Math.ceil(filtered.length / issuesPerPage)
-                    }
-                    onClick={() =>
-                        setPage((prev) =>
-                            page < Math.ceil(filtered.length / issuesPerPage)
-                                ? prev + 1
-                                : prev
-                        )
-                    }
-                >
-                    Next
-                </Button>
-            </div>
+            
         </>
     );
 };
