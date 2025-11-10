@@ -73,7 +73,7 @@ const UpdateStatus = ({ issue }) => {
                     const data = await deleteIssueStatus(issue?.id);
                     if (data.success) {
                         toast.success(data.message);
-                        router.push('/issues');
+                        router.back();
                     } else {
                         toast.error(data.error);
                     }
