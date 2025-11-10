@@ -34,6 +34,7 @@ const IssuesTable = ({ issues }) => {
     ];
     const router = useRouter();
     const searchParams = useSearchParams()
+    const currentStatus = searchParams.get('status') || 'all'
 
     const handleStatusChange = (status) => {
         const params = new URLSearchParams(searchParams)
@@ -43,7 +44,7 @@ const IssuesTable = ({ issues }) => {
     return (
         <>
             <div className="w-full flex flex-wrap gap-2 justify-between overflow-hidden px-10 pt-5 relative z-1000">
-                <Select defaultValue='all' onValueChange={handleStatusChange}>
+                <Select defaultValue={currentStatus} onValueChange={handleStatusChange}>
                     <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="Filter by Status" />
                     </SelectTrigger>
@@ -66,9 +67,9 @@ const IssuesTable = ({ issues }) => {
                 </Link>
             </div>
             <div className="w-full px-3 sm:px-10 py-4">
-                <div className="overflow-hidden">
-                    <Table className={'border'}>
-                        <TableHeader className={'bg-zinc-100 dark:bg-zinc-700'}>
+                <div className="overflow-hidden rounded-xl border">
+                    <Table>
+                        <TableHeader className={'bg-zinc-100 dark:bg-zinc-800'}>
                             <TableRow>
                                 {tableHeaders.map((th, idx) => (
                                     <TableHead key={idx}>{th}</TableHead>

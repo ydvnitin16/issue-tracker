@@ -9,13 +9,13 @@ const IssuesTableSkeleton = () => {
             </div>
 
             <div className="w-full overflow-hidden border rounded-lg">
-                <div className="grid grid-cols-3 bg-zinc-100 dark:bg-zinc-700 p-3 sm:p-4">
+                <div className="grid grid-cols-3 bg-zinc-100 dark:bg-zinc-800 p-3 sm:p-4">
                     <Skeleton className="h-4 w-20 dark:bg-zinc-800" />
                     <Skeleton className="h-4 w-20 dark:bg-zinc-800" />
                     <Skeleton className="h-4 w-20 dark:bg-zinc-800" />
                 </div>
 
-                <div className="divide-y divide-zinc-200 dark:divide-zinc-700">
+                <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
                     {Array.from({ length: 5 }).map((_, i) => (
                         <div
                             key={i}

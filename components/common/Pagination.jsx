@@ -10,13 +10,14 @@ import {
 } from '@/components/ui/pagination';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const PaginationComponent = () => {
+const PaginationComponent = ({ currentPage, pageCount }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const currentPage = Number(searchParams.get('page'));
-    console.log(searchParams);
 
     const handleChange = async (number) => {
+        if (number > pageCount || number < 1) {
+            return;
+        }
         const params = new URLSearchParams(searchParams);
         params.set('page', Number(number));
         router.push('?' + params);
@@ -26,27 +27,44 @@ const PaginationComponent = () => {
             <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious
+                        className={'disabled:cursor-no-drop'}
+                        disabled={currentPage === 1}
                         onClick={() => handleChange(currentPage - 1)}
                     />
                 </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink>{currentPage - 1}</PaginationLink>
+                <PaginationItem
+                    className={`${currentPage <= 1 ? 'hidden' : ''}`}
+                    onClick={() => handleChange(1)}
+                >
+                    <PaginationLink>{1}</PaginationLink>
+                </PaginationItem>
+                <PaginationItem
+                    className={`${currentPage <= 2 ? 'hidden' : ''}`}
+                >
+                    <PaginationEllipsis />
                 </PaginationItem>
                 <PaginationItem>
                     <PaginationLink isActive>{currentPage}</PaginationLink>
                 </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink
-                        onClick={() => handleChange(currentPage + 1)}
-                    >
-                        {currentPage + 1}
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
+                <PaginationItem
+                    className={`${currentPage === pageCount ? 'hidden' : ''}`}
+                >
                     <PaginationEllipsis />
                 </PaginationItem>
                 <PaginationItem>
+                    <PaginationLink
+                        className={`${
+                            currentPage === pageCount ? 'hidden' : ''
+                        }`}
+                        onClick={() => handleChange(Number(pageCount))}
+                    >
+                        {pageCount}
+                    </PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
                     <PaginationNext
+                        className={'disabled:cursor-no-drop'}
+                        disabled={currentPage === pageCount}
                         onClick={() => handleChange(currentPage + 1)}
                     />
                 </PaginationItem>
