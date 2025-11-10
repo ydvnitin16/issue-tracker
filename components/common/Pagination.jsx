@@ -20,7 +20,7 @@ const PaginationComponent = ({ currentPage, pageCount }) => {
         }
         const params = new URLSearchParams(searchParams);
         params.set('page', Number(number));
-        router.push('?' + params);
+        router.replace('?' + params);
     };
     return (
         <Pagination>
