@@ -27,8 +27,7 @@ const PaginationComponent = ({ currentPage, pageCount }) => {
             <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious
-                        className={'disabled:cursor-no-drop'}
-                        disabled={currentPage === 1}
+                        className={currentPage === 1 ? 'opacity-50 cursor-no-drop' : ''}
                         onClick={() => handleChange(currentPage - 1)}
                     />
                 </PaginationItem>
@@ -63,8 +62,7 @@ const PaginationComponent = ({ currentPage, pageCount }) => {
                 </PaginationItem>
                 <PaginationItem>
                     <PaginationNext
-                        className={'disabled:cursor-no-drop'}
-                        disabled={currentPage === pageCount}
+                        className={currentPage === pageCount ? 'opacity-50 cursor-no-drop' : ''}
                         onClick={() => handleChange(currentPage + 1)}
                     />
                 </PaginationItem>
