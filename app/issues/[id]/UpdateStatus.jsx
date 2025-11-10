@@ -50,15 +50,15 @@ const UpdateStatus = ({ issue }) => {
                         </SelectItem>
                         <SelectItem
                             className={'cursor-pointer'}
-                            value={'closed'}
+                            value={'in-progress'}
                         >
-                            Closed
+                            In Progress
                         </SelectItem>
                         <SelectItem
                             className={'cursor-pointer'}
-                            value={'in progress'}
+                            value={'closed'}
                         >
-                            In Progress
+                            Closed
                         </SelectItem>
                         <SelectItem className={'hidden'} value={'loading'}>
                             Updating...

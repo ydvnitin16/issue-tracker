@@ -7,8 +7,11 @@ const { prisma } = require('@/lib/prisma');
 
 export const UpdateIssueStatus = async (id, status) => {
     try {
-        if (!id || !status || status.trim() === '') {
-            throw new Error('Missing issue id or status');
+        if (!id) {
+            throw new Error('Missing or Invalid issue id');
+        }
+        if (!status || !['open', 'in-progress', 'closed'].includes(status)) {
+            throw new Error('Missing or Invalid status');
         }
         const issue = await prisma.issue.findUnique({ where: { id: id } });
         if (!issue) throw new Error('Issue not found');
