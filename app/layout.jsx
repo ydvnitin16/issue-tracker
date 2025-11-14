@@ -2,6 +2,7 @@ import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import './globals.css';
 import Navbar from '@/components/layout/Navbar';
 import { Toaster } from '@/components/ui/sonner';
+import AuthSessionProvider from './auth/AuthSessionProvider';
 
 export const metadata = {
     title: 'Create Next App',
@@ -12,16 +13,18 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <body>
-                <Navbar />
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    {children}
-                    <Toaster position={'top-right'}  />
-                </ThemeProvider>
+                <AuthSessionProvider>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                        disableTransitionOnChange
+                    >
+                        <Navbar />
+                        {children}
+                        <Toaster position={'top-right'} />
+                    </ThemeProvider>
+                </AuthSessionProvider>
             </body>
         </html>
     );
