@@ -3,7 +3,12 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request, { params }) {
     const { id } = await params;
-    const issue = await prisma.issue.findUnique({ where: { id: id } });
+    const issue = await prisma.issue.findUnique({
+        where: { id: id },
+        include: {
+            assignedUser: { select: { id: true, name: true, email: true } },
+        },
+    });
 
     if (!issue)
         return NextResponse.json(

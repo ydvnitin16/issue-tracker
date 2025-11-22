@@ -46,3 +46,30 @@ export const deleteIssueStatus = async (id) => {
         return { success: false, error: err.message };
     }
 };
+
+export const assignIssueToUser = async (issueId, userId) => {
+    try {
+        if (!issueId || !userId) {
+            throw new Error('Invalid data');
+        }
+
+        const user = await prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const issue = await prisma.issue.update({
+            where: { id: issueId },
+            data: { assignedUserId: userId },
+            include: { assignedUser: { select: { name: true } } },
+        });
+
+        return {
+            success: true,
+            message: `Issue Assigned to ${issue?.assignedUser?.name}.`,
+        };
+    } catch (err) {
+        console.error(err.message);
+        return { success: false, error: err.message };
+    }
+};

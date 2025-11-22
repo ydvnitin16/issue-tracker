@@ -15,6 +15,7 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import AssignUser from './AssignUser';
 
 const UpdateStatus = ({ issue }) => {
     const router = useRouter();
@@ -66,6 +67,10 @@ const UpdateStatus = ({ issue }) => {
                     </SelectGroup>
                 </SelectContent>
             </Select>
+            <AssignUser issue={issue} />
+            <Link className={'w-full'} href={`/issues/${issue.id}/edit`}>
+                <Button className={'w-full'}>Edit Issue</Button>
+            </Link>
             <AlertDialogBox
                 className="w-full"
                 triggerText="Delete Issue"
@@ -80,9 +85,6 @@ const UpdateStatus = ({ issue }) => {
                 }}
                 buttonVariant="destructive"
             />
-            <Link className={'w-full'} href={`/issues/${issue.id}/edit`}>
-                <Button className={'w-full'}>Edit Issue</Button>
-            </Link>
         </section>
     );
 };
