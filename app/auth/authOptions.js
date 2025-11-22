@@ -95,5 +95,8 @@ export const authOptions = {
             session.user.picture = token.picture;
             return session;
         },
+        async redirect({ url, baseUrl }) {
+            return `${baseUrl}/`;
+        },
     },
 };
