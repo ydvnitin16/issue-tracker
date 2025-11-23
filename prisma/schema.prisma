@@ -24,11 +24,17 @@ model Issue {
   updatedAt   DateTime @updatedAt
 }
 
+enum Role{
+  USER
+  ADMIN
+}
+
 model User {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   email    String   @unique
   password String?
+  role     Role     @default(USER)
   profilePicture String?
   createdAt DateTime @default(now())
   issues Issue[]

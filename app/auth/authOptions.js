@@ -68,6 +68,7 @@ export const authOptions = {
                         email: email,
                         name: profile?.name || user?.name,
                         profilePicture: profile?.picture || profile?.avatar_url,
+                        role: 'USER'
                     },
                 });
                 return true;
@@ -85,6 +86,7 @@ export const authOptions = {
                 token.name = dbUser.name;
                 token.email = dbUser.email;
                 token.picture = dbUser.profilePicture;
+                token.role = dbUser.role;
             }
             return token;
         },
@@ -93,6 +95,7 @@ export const authOptions = {
             session.user.name = token.name;
             session.user.email = token.email;
             session.user.picture = token.picture;
+            session.user.role = token.role;
             return session;
         },
         async redirect({ url, baseUrl }) {
