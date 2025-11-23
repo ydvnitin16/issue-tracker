@@ -1,4 +1,6 @@
+import { authOptions } from '@/app/auth/authOptions';
 import { prisma } from '@/lib/prisma';
+import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
@@ -18,6 +20,14 @@ export async function GET() {
 
 export async function POST(request) {
     try {
+        const { user } = await getServerSession(authOptions);
+        if (!user) {
+            return NextResponse.json(
+                { success: false, error: 'Not authorized' },
+                { status: 401 }
+            );
+        }
+
         const body = await request.json();
         if (!body || !body.title || body.title.trim() === '') {
             return NextResponse.json(
@@ -31,6 +41,7 @@ export async function POST(request) {
                 title: body.title,
                 description: body.description || '',
                 status: 'open',
+                createdById: user.id,
             },
         });
 

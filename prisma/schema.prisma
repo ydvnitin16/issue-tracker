@@ -19,7 +19,11 @@ model Issue {
   description String
   status      String
   assignedUserId String?  @db.ObjectId
-  assignedUser User? @relation(fields: [assignedUserId], references: [id])
+  assignedUser User? @relation(name: "AssignedUser", fields: [assignedUserId], references: [id])
+
+  createdById   String?   @db.ObjectId
+  createdBy     User?     @relation(name: "CreatedBy", fields: [createdById], references: [id])
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -37,5 +41,6 @@ model User {
   role     Role     @default(USER)
   profilePicture String?
   createdAt DateTime @default(now())
-  issues Issue[]
+  assignedIssues Issue[] @relation(name: "AssignedUser")
+  createdIssues Issue[]  @relation(name: "CreatedBy")
 }
