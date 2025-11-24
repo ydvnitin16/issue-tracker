@@ -8,8 +8,10 @@ const page = async ({ searchParams }) => {
     const issuePerPage = 5;
     let currentPage = Number((await searchParams).page) || 1;
     const statusFilter = (await searchParams)?.status;
+    const sort = (await searchParams)?.sort || 'asc';
     const issues = await prisma.issue.findMany({
         where: { status: statusFilter === 'all' ? {} : statusFilter },
+        orderBy: { createdAt: sort },
         take: issuePerPage,
         skip: issuePerPage * (currentPage - 1),
     });
@@ -17,7 +19,7 @@ const page = async ({ searchParams }) => {
     const pageCount = Math.ceil(
         (await prisma.issue.count({
             where: { status: statusFilter === 'all' ? {} : statusFilter },
-        })) / issuePerPage
+        })) / issuePerPage || 1
     );
 
     if (currentPage > pageCount) {

@@ -23,6 +23,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { formatDate } from '@/lib/utils/formatUtils';
 import StatusBadge from '@/components/common/StatusBadge';
+import { ArrowDownNarrowWide, ArrowUpNarrowWide } from 'lucide-react';
 
 const IssuesTable = ({ issues }) => {
     const tableHeaders = ['Issue', 'Status', 'Created'];
@@ -33,35 +34,56 @@ const IssuesTable = ({ issues }) => {
         { label: 'Closed', value: 'closed' },
     ];
     const router = useRouter();
-    const searchParams = useSearchParams()
-    const currentStatus = searchParams.get('status') || 'all'
+    const searchParams = useSearchParams();
+    const currentStatus = searchParams.get('status') || 'all';
+    const sort = searchParams.get('sort') || 'asc';
 
     const handleStatusChange = (status) => {
-        const params = new URLSearchParams(searchParams)
-        params.set('status', status)
-        router.push('?' + params)
-    }
+        const params = new URLSearchParams(searchParams);
+        params.set('status', status);
+        router.push('?' + params);
+    };
+
+    const handleSort = () => {
+        const sortTo = sort === 'asc' ? 'desc' : 'asc';
+        const params = new URLSearchParams(searchParams);
+        console.log(params);
+        params.set('sort', sortTo);
+        console.log(params);
+        router.push('?' + params);
+    };
+
     return (
         <>
             <div className="w-full flex flex-wrap gap-2 justify-between overflow-hidden px-10 pt-5 relative z-1000">
-                <Select defaultValue={currentStatus} onValueChange={handleStatusChange}>
-                    <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Filter by Status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectLabel>Status</SelectLabel>
-                            {sortStatus.map((s, idx) => (
-                                <SelectItem
-                                    key={idx}
-                                    value={s.value}
-                                >
-                                    {s.label}
-                                </SelectItem>
-                            ))}
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
+                <div className='flex gap-4 flex-wrap'>
+                    <Select
+                        defaultValue={currentStatus}
+                        onValueChange={handleStatusChange}
+                    >
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Filter by Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Status</SelectLabel>
+                                {sortStatus.map((s, idx) => (
+                                    <SelectItem key={idx} value={s.value}>
+                                        {s.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                    <Button onClick={handleSort} variant={'outline'}>
+                        Sort by date{' '}
+                        {sort === 'asc' ? (
+                            <ArrowUpNarrowWide />
+                        ) : (
+                            <ArrowDownNarrowWide />
+                        )}
+                    </Button>
+                </div>
                 <Link href={'/issues/new'}>
                     <Button>Add New Issue</Button>
                 </Link>
@@ -80,7 +102,7 @@ const IssuesTable = ({ issues }) => {
                             {issues.length > 0
                                 ? issues.map((data) => (
                                       <TableRow
-                                      className={'cursor-pointer'}
+                                          className={'cursor-pointer'}
                                           key={data.id}
                                           onClick={() =>
                                               router.push(`/issues/${data?.id}`)
@@ -90,7 +112,9 @@ const IssuesTable = ({ issues }) => {
                                               {data?.title || 'Untitled'}
                                           </TableCell>
                                           <TableCell>
-                                            <StatusBadge status={data.status} />
+                                              <StatusBadge
+                                                  status={data.status}
+                                              />
                                           </TableCell>
                                           <TableCell className={'font-medium'}>
                                               {formatDate(data?.createdAt)}
@@ -114,7 +138,6 @@ const IssuesTable = ({ issues }) => {
                     </Table>
                 </div>
             </div>
-            
         </>
     );
 };
