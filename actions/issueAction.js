@@ -3,20 +3,27 @@
 import { authOptions } from '@/app/auth/authOptions';
 import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 const { prisma } = require('@/lib/prisma');
 
 export const UpdateIssueStatus = async (id, status) => {
     try {
-        if (!id) {
-            throw new Error('Missing or Invalid issue id');
-        }
-        if (!status || !['open', 'in-progress', 'closed'].includes(status)) {
+        const { user } = await getServerSession(authOptions)
+        if (!user) throw new Error('Not authorized');
+
+        if (!id) throw new Error('Missing or Invalid issue id');
+
+        if (!status || !['open', 'in-progress', 'closed'].includes(status))
             throw new Error('Missing or Invalid status');
-        }
+
+        const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+        if (!dbUser) throw new Error('User not found');
+
         const issue = await prisma.issue.findUnique({ where: { id: id } });
         if (!issue) throw new Error('Issue not found');
+
+        if (dbUser.role !== 'ADMIN' && issue.assignedUserId !== dbUser.id)
+            throw new Error('You are not allowed for this action');
 
         const updatedIssue = await prisma.issue.update({
             where: { id: id },
@@ -38,7 +45,7 @@ export const UpdateIssueStatus = async (id, status) => {
 export const deleteIssueStatus = async (id) => {
     try {
         const session = await getServerSession(authOptions);
-        if (session.role !== 'ADMIN') {
+        if (session.user.role !== 'ADMIN') {
             throw new Error('You are not allowed for this action');
         }
         if (!id) {
@@ -56,7 +63,7 @@ export const deleteIssueStatus = async (id) => {
 export const assignIssueToUser = async (issueId, userId) => {
     try {
         const session = await getServerSession(authOptions);
-        if (session.role !== 'ADMIN') {
+        if (session.user.role !== 'ADMIN') {
             throw new Error('You are not allowed for this action');
         }
         if (!issueId || !userId) {
