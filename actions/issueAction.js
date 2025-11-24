@@ -1,5 +1,7 @@
 'use server';
 
+import { authOptions } from '@/app/auth/authOptions';
+import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -35,6 +37,10 @@ export const UpdateIssueStatus = async (id, status) => {
 
 export const deleteIssueStatus = async (id) => {
     try {
+        const session = await getServerSession(authOptions);
+        if (session.role !== 'ADMIN') {
+            throw new Error('You are not allowed for this action');
+        }
         if (!id) {
             throw new Error('Invalid data');
         }
@@ -49,6 +55,10 @@ export const deleteIssueStatus = async (id) => {
 
 export const assignIssueToUser = async (issueId, userId) => {
     try {
+        const session = await getServerSession(authOptions);
+        if (session.role !== 'ADMIN') {
+            throw new Error('You are not allowed for this action');
+        }
         if (!issueId || !userId) {
             throw new Error('Invalid data');
         }
