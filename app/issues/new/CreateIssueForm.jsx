@@ -1,11 +1,8 @@
-import React from 'react'
-import IssueForm from '../components/IssueForm'
+import React from 'react';
+import IssueForm from '../_components/IssueForm';
 
 const CreateIssueForm = () => {
+    return <IssueForm />;
+};
 
-  return (
-    <IssueForm />
-  )
-}
-
-export default CreateIssueForm
+export default CreateIssueForm;

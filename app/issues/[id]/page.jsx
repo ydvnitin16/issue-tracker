@@ -1,13 +1,14 @@
 import React from 'react';
 import IssueDetails from './IssueDetails.jsx';
 import UpdateStatus from './UpdateStatus.jsx';
+import { prisma } from '@/lib/prisma';
 
 const page = async ({ params }) => {
     const { id } = await params;
-    const res = await fetch(`http://localhost:3000/api/issues/${id}`);
-    const data = await res.json();
-    if(!res.ok){
-        throw new Error("Issue not found")
+    const issue = await prisma.issue.findUnique({ where: { id } });
+    const data = { issue };
+    if (!data.issue) {
+        throw new Error('Issue not found');
     }
 
     return (

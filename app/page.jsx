@@ -2,10 +2,11 @@ import ChartBarDefault from './ChartBarDefault';
 import DashboardCard from './DashboardSectionCard';
 import LatestIssues from './LatestIssues';
 import React from 'react';
+import { prisma } from '@/lib/prisma';
 
 const Home = async () => {
-    const res = await fetch('http://localhost:3000/api/issues');
-    const data = await res.json();
+    const issues = await prisma.issue.findMany();
+    const data = { issues };
 
     return (
         <>
