@@ -15,12 +15,14 @@ export default function Error({ error, reset }) {
     }, [error]);
 
     return (
-        <div className='flex justify-center items-center h-[80vh]'>
+        <div className="flex-1 w-full overflow-hidden border rounded-2xl p-10">
             <Card className={'px-10 text-center'}>
                 <CardTitle>Something went wrong!</CardTitle>
                 <CardDescription>{error.message}</CardDescription>
                 <CardFooter>
-                    <Button className={'w-full'} onClick={() => reset()}>Try again</Button>
+                    <Button className={'w-full'} onClick={() => reset()}>
+                        Try again
+                    </Button>
                 </CardFooter>
             </Card>
         </div>
