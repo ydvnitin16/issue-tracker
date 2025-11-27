@@ -5,12 +5,25 @@ import {
     CardDescription,
     CardTitle,
 } from '@/components/ui/card';
+import { prisma } from '@/lib/prisma';
 
-const DashboardSectionCard = () => {
+const issuesCountByStatus = async (status) => {
+    return await prisma.issue.count({
+        where: { status: String(status) },
+    });
+};
+
+const IssuesSummary = async () => {
+    const [openIssuesCount, inProgressIssuesCount, closedIssuesCount] =
+        await Promise.all([
+            issuesCountByStatus('open'),
+            issuesCountByStatus('in-progress'),
+            issuesCountByStatus('closed'),
+        ]);
     const cardContent = [
-        { label: 'Open Issues', content: '2' },
-        { label: 'In-Progress Issues', content: '5' },
-        { label: 'Closed Issues', content: '1' },
+        { label: 'Open Issues', content: openIssuesCount },
+        { label: 'In-Progress Issues', content: inProgressIssuesCount },
+        { label: 'Closed Issues', content: closedIssuesCount },
     ];
     return (
         <div className="flex w-full space-x-3">
@@ -28,4 +41,4 @@ const DashboardSectionCard = () => {
     );
 };
 
-export default DashboardSectionCard;
+export default IssuesSummary;

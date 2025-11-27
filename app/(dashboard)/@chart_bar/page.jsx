@@ -35,7 +35,7 @@ const chartConfig = {
     },
 };
 
-const ChartBarDefault = () => {
+const ChartBarDefault = async () => {
     return (
         <Card>
             <CardHeader>
