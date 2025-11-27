@@ -4,6 +4,11 @@ import { prisma } from '@/lib/prisma';
 import PaginationComponent from '@/components/common/Pagination';
 import { redirect } from 'next/navigation';
 
+export const metadata = {
+    title: 'Issues list',
+    description: 'Issues created by different users'
+}
+
 const page = async ({ searchParams }) => {
     const issuePerPage = 5;
     let currentPage = Number((await searchParams).page) || 1;
